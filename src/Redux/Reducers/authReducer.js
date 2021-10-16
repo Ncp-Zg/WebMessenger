@@ -10,6 +10,8 @@ const initState = {
 };
 
 export const authReducer= (state = initState, action) => {
+
+  console.log(action)
   switch (action.type) {
     case `${authConstants.USER_LOGIN}_REQUEST`:
       return (state = {

@@ -5,7 +5,18 @@ import HomePage from './Containers/HomePage/HomePage';
 import LoginPage from './Containers/LoginPage/LoginPage';
 import Register from './Containers/RegisterPage/Register';
 import PrivateRoute from './Components/PrivateRoute';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { isloggedInUser } from './Redux/Actions';
 function App() {
+  const auth = useSelector(state=>state.auth)
+
+  const dispatch = useDispatch()
+  useEffect(()=>{
+      if(!auth.authenticated){
+        dispatch(isloggedInUser())
+      }
+    },[])
   return (
     <div className="App">
       <Router>
