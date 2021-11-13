@@ -32,6 +32,16 @@ export const authReducer= (state = initState, action) => {
         authenticating: false,
         error: action.payload.err,
       });
+    case `${authConstants.USER_LOGOUT}_REQUEST`:
+    case `${authConstants.USER_LOGOUT}_SUCCESS`:
+      return state = {
+        ...initState
+      }
+    case `${authConstants.USER_LOGOUT}_FAILURE`:
+      return state = {
+        ...state,
+        error : action.payload.err
+      }
     default:
       return state;
   }

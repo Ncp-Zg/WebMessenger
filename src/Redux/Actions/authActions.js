@@ -108,3 +108,23 @@ export const isloggedInUser = ()=>{
      }
   }
 }
+
+
+export const logout = ()=>{
+  return async dispatch =>{
+    dispatch({type:`$authConstants.USERLOGOUT}_REQUEST` });
+
+    //Now lets logout user
+
+    auth.signOut().then(()=>{
+      //successfully
+
+      localStorage.clear();
+      dispatch({type: `${authConstants.USER_LOGOUT}_SUCCESS`})
+
+    }).catch(err => {
+      console.log(err)
+      dispatch({type: `${authConstants.USER_LOGOUT}_FAILURE`, payload: {err}} )
+    })
+  }
+}
