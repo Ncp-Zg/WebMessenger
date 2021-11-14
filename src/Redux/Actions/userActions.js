@@ -5,7 +5,7 @@ export const getRealtimeUsers = (uid) => {
   return async (dispatch) => {
     dispatch({ type: `${userConstants.GET_REALTIME_USERS}_REQUEST` });
 
-     await db.collection("users")
+     const unsubscribe = db.collection("users")
       //   .where("uid","!=",uid)
       .onSnapshot((querySnapshot) => {
         var users = [];
@@ -22,5 +22,7 @@ export const getRealtimeUsers = (uid) => {
           payload: users,
         });
       });
+
+      return unsubscribe
   };
 };

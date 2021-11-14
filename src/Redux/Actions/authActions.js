@@ -63,31 +63,40 @@ export const signIn = (user) => {
       .signInWithEmailAndPassword(user.email, user.password)
       .then((data) => {
         console.log(data);
-        const name = data.user.displayName.split(" ");
-        const firstName = name[0];
-        const lastName = name[1];
 
-        const loggedInUser = {
-          firstName,
-          lastName,
-          uid: data.user.uid,
-          email: data.user.email,
-        };
+        db.collection("users")
+          .doc(data.user.uid)
+          .update({
+            isOnline: true,
+          })
+          .then(() => {
+            const name = data.user.displayName.split(" ");
+            const firstName = name[0];
+            const lastName = name[1];
 
-        localStorage.setItem("user", JSON.stringify(loggedInUser));
+            const loggedInUser = {
+              firstName,
+              lastName,
+              uid: data.user.uid,
+              email: data.user.email,
+            };
 
-        dispatch({
-          type: `${authConstants.USER_LOGIN}_SUCCESS`,
-          payload: { user: loggedInUser },
-        });
+            localStorage.setItem("user", JSON.stringify(loggedInUser));
+
+            dispatch({
+              type: `${authConstants.USER_LOGIN}_SUCCESS`,
+              payload: { user: loggedInUser },
+            });
+          })
+          .catch((error) => {
+            console.log(error);
+            dispatch({
+              type: `${authConstants.USER_LOGIN}_FAILURE`,
+              payload: { error },
+            });
+          });
       })
-      .catch((error) => {
-        console.log(error);
-        dispatch({
-          type: `${authConstants.USER_LOGIN}_FAILURE`,
-          payload: { error },
-        });
-      });
+      .catch((err) => console.log(err));
   };
 };
 
@@ -118,7 +127,7 @@ export const logout = (uid) => {
     //Now lets logout user
 
     db.collection("users")
-        .doc(uid)
+      .doc(uid)
       .update({
         isOnline: false,
       })
