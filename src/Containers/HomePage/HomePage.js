@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Layout from '../../Components/Layout/Layout';
+import { getRealtimeUsers } from '../../Redux/Actions';
 import './style.css';
 
 const HomePage = (props) => {
+
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(getRealtimeUsers())
+    },[])
+
   return (
 
     <Layout>

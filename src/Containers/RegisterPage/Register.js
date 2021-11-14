@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import Card from "../../Components/UI/Card/Card";
 import Layout from "../../Components/Layout/Layout";
 import {signup} from "../../Redux/Actions"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../firebase";
+import { Redirect } from "react-router";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -10,6 +12,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch()
+  const auth = useSelector(state=>state.auth)
 
   const registerUser=(e)=>{
 
@@ -19,6 +22,10 @@ const Register = () => {
         firstName,lastName,password,email
     }
       dispatch(signup(user))
+  }
+
+  if(auth.authenticated){
+    return<Redirect to="/"/>
   }
 
   return (
