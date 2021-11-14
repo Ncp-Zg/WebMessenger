@@ -33,7 +33,7 @@ const Header = (props) => {
       </div>
       <ul className="menu">
         {auth.authenticated ? (
-          <Link to={"#"} onClick={()=>dispatch(logout())}>
+          <Link to={"#"} onClick={()=>dispatch(logout(auth.uid))}>
             Logout
           </Link>
         ) : null}

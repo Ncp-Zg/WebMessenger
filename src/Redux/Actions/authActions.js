@@ -19,12 +19,13 @@ export const signup = (user) => {
           .then(() => {
             //if u are here means it is updated successfully
             db.collection("users")
-              .add({
+              .doc(data.user.uid)
+              .set({
                 firstName: user.firstName,
                 lastName: user.lastName,
                 uid: data.user.uid,
                 createdAt: new Date(),
-                isOnline:true
+                isOnline: true,
               })
               .then(() => {
                 // successful
@@ -69,63 +70,75 @@ export const signIn = (user) => {
         const loggedInUser = {
           firstName,
           lastName,
-          uid:data.user.uid,
-          email: data.user.email
-        }
+          uid: data.user.uid,
+          email: data.user.email,
+        };
 
-        localStorage.setItem("user",JSON.stringify(loggedInUser));
+        localStorage.setItem("user", JSON.stringify(loggedInUser));
 
         dispatch({
-          type:`${authConstants.USER_LOGIN}_SUCCESS`,
-          payload: {user: loggedInUser}
-        })
-
+          type: `${authConstants.USER_LOGIN}_SUCCESS`,
+          payload: { user: loggedInUser },
+        });
       })
       .catch((error) => {
         console.log(error);
         dispatch({
-          type:`${authConstants.USER_LOGIN}_FAILURE`,
-          payload:{error}
-        })
+          type: `${authConstants.USER_LOGIN}_FAILURE`,
+          payload: { error },
+        });
       });
   };
 };
 
+export const isloggedInUser = () => {
+  return async (dispatch) => {
+    const user = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null;
 
-export const isloggedInUser = ()=>{
-  return async dispatch =>{
-     const user = localStorage.getItem("user")? JSON.parse(localStorage.getItem("user")) : null ;
-
-     if(user){
+    if (user) {
       dispatch({
-        type:`${authConstants.USER_LOGIN}_SUCCESS`,
-        payload: {user: user}
-      })
-     }else{
+        type: `${authConstants.USER_LOGIN}_SUCCESS`,
+        payload: { user: user },
+      });
+    } else {
       dispatch({
-        type:`${authConstants.USER_LOGIN}_FAILURE`,
-        payload:{error:"Login again please"}
-      })
-     }
-  }
-}
+        type: `${authConstants.USER_LOGIN}_FAILURE`,
+        payload: { error: "Login again please" },
+      });
+    }
+  };
+};
 
-
-export const logout = ()=>{
-  return async dispatch =>{
-    dispatch({type:`$authConstants.USERLOGOUT}_REQUEST` });
+export const logout = (uid) => {
+  return async (dispatch) => {
+    dispatch({ type: `$authConstants.USERLOGOUT}_REQUEST` });
 
     //Now lets logout user
 
-    auth.signOut().then(()=>{
-      //successfully
+    db.collection("users")
+        .doc(uid)
+      .update({
+        isOnline: false,
+      })
+      .then(() => {
+        auth
+          .signOut()
+          .then(() => {
+            //successfully
 
-      localStorage.clear();
-      dispatch({type: `${authConstants.USER_LOGOUT}_SUCCESS`})
-
-    }).catch(err => {
-      console.log(err)
-      dispatch({type: `${authConstants.USER_LOGOUT}_FAILURE`, payload: {err}} )
-    })
-  }
-}
+            localStorage.clear();
+            dispatch({ type: `${authConstants.USER_LOGOUT}_SUCCESS` });
+          })
+          .catch((err) => {
+            console.log(err);
+            dispatch({
+              type: `${authConstants.USER_LOGOUT}_FAILURE`,
+              payload: { err },
+            });
+          });
+      })
+      .catch((err) => console.log(err));
+  };
+};
