@@ -5,7 +5,8 @@ export const getRealtimeUsers = (uid) => {
   return async (dispatch) => {
     dispatch({ type: `${userConstants.GET_REALTIME_USERS}_REQUEST` });
 
-     const unsubscribe = db.collection("users")
+    const unsubscribe = db
+      .collection("users")
       //   .where("uid","!=",uid)
       .onSnapshot((querySnapshot) => {
         var users = [];
@@ -23,6 +24,60 @@ export const getRealtimeUsers = (uid) => {
         });
       });
 
-      return unsubscribe
+    return unsubscribe;
+  };
+};
+
+export const updateMessage = (message) => {
+  return async (dispatch) => {
+    db.collection("conversation")
+      .add({
+        ...message,
+        isView: false,
+        createdAt: new Date(),
+      })
+      .then((data) => {
+        console.log(data);
+        //success
+        // dispatch({
+        //     type:userConstants.GET_REALTIME_MESSAGES,
+        // })
+      })
+      .catch((err) => console.log(err));
+  };
+};
+
+export const getRealtimeConversations = (user) => {
+  return async (dispatch) => {
+    db.collection("conversation")
+      .where("user_uid_1", "in", [user.uid_1, user.uid_2])
+      .orderBy("createdAt","asc")
+      .onSnapshot((querySnapshot) => {
+        const conversations = [];
+        querySnapshot.forEach((doc) => {
+          if (
+            (doc.data().user_uid_1 === user.uid_1 && doc.data().user_uid_2 === user.uid_2) 
+            ||
+            (doc.data().user_uid_1 === user.uid_2 && doc.data().user_uid_2 === user.uid_1)
+          ) {
+            conversations.push(doc.data());
+          }
+          console.log(conversations)
+          if(conversations.length > 0){
+              dispatch({
+                  type: userConstants.GET_REALTIME_MESSAGES,
+                  payload: {conversations}
+              })
+          }else{
+              dispatch({
+                  type: `${userConstants.GET_REALTIME_MESSAGES}_FAILURE`,
+                  payload: {conversations}
+              })
+          }
+        });
+
+        console.log(conversations);
+      });
+    //user_uid_1 === "myid" and user_uid_2 = your id or user=uid_1 = yourid and user=uid_2 = myid
   };
 };
