@@ -61,14 +61,13 @@ const HomePage = (props) => {
     };
   }, []);
 
+  
+
   const initChat = (user) => {
     setChatStarted(true);
     setChatUser(`${user.firstName} ${user.lastName}`);
     setUserUid(user.uid);
-
-    console.log(user);
-
-    dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:user.uid }))
+    
 
   };
 
@@ -81,11 +80,19 @@ const HomePage = (props) => {
 
     if (message !== "") {
       dispatch(updateMessage(msgObj))
-      .then(()=>setMessage(""))
+      setMessage("")
     }
 
     console.log(msgObj);
   };
+
+  useEffect(()=>{
+      if(userUid){
+          console.log(userUid)
+        dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid }))
+      }
+
+  },[userUid])
 
   return (
     <Layout>
@@ -97,7 +104,7 @@ const HomePage = (props) => {
                   <User
                     key={user.uid}
                     user={user}
-                    onClick={(user) => initChat(user)}
+                    onClick={initChat}
                   />
                 );
               })
@@ -109,8 +116,13 @@ const HomePage = (props) => {
             {chatStarted ? 
             user.conversations.map((con,index)=>
                 (
-              <div key={index} style={{ textAlign: con.user_uid_1 == auth.uid ? "right" : "left" }}>
-                <p className="messageStyle">{con.message}</p>
+              <div key={index} style={{ textAlign: con.user_uid_1 === auth.uid ? "right" : "left" }}>
+                {
+                    (con.user_uid_1 === userUid || con.user_uid_2 === userUid) ?<p className="messageStyle">
+                        {con.message}
+                    </p> : null
+                    }
+                
               </div>
             )
                 )
