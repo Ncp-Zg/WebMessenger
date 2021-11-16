@@ -69,7 +69,7 @@ export const getRealtimeConversations = (user) => {
           type: userConstants.GET_REALTIME_MESSAGES,
           payload: { conversations },
         });
-      });
+      }, (err)=>console.log(err));
     //user_uid_1 === "myid" and user_uid_2 = your id or user=uid_1 = yourid and user=uid_2 = myid
   };
 };

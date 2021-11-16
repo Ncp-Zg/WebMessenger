@@ -83,16 +83,16 @@ const HomePage = (props) => {
       setMessage("")
     }
 
-    console.log(msgObj);
+    // console.log(msgObj);
   };
-
+  console.log(userUid)
   useEffect(()=>{
       if(userUid){
           console.log(userUid)
         dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid }))
       }
 
-  },[userUid])
+  },[userUid,message===""])
 
   return (
     <Layout>
