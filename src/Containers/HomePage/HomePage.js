@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Layout from "../../Components/Layout/Layout";
-import { getRealtimeConversations, getRealtimeUsers, updateMessage } from "../../Redux/Actions";
+import { getRealtimeConversations, getRealtimeUsers, isViewed, updateMessage } from "../../Redux/Actions";
 import "./style.css";
 
 const User = (props) => {
@@ -37,12 +37,17 @@ const User = (props) => {
 const HomePage = (props) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const user = useSelector((state) => state.user);
+  const users = useSelector((state) => state.user);
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
   const [message, setMessage] = useState("");
+  const [convo, setConvo] = useState([]);
   const [userUid, setUserUid] = useState(null);
   let unsubscribe;
+
+  console.log(users.conversations,userUid)
+
+
 
   useEffect(() => {
     unsubscribe = dispatch(getRealtimeUsers(auth.uid))
@@ -63,10 +68,14 @@ const HomePage = (props) => {
 
   
 
-  const initChat = (user) => {
+  const initChat = async (user) => {
+
     setChatStarted(true);
     setChatUser(`${user.firstName} ${user.lastName}`);
     setUserUid(user.uid);
+
+
+    setTimeout(()=>dispatch(isViewed()),2000) 
     
 
   };
@@ -85,11 +94,11 @@ const HomePage = (props) => {
 
     // console.log(msgObj);
   };
-  console.log(userUid)
+//   console.log(userUid)
   useEffect(()=>{
       if(userUid){
-          console.log(userUid)
-        dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid }))
+        //   console.log(userUid)
+        dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid },chatUser))
       }
 
   },[userUid,message===""])
@@ -98,8 +107,8 @@ const HomePage = (props) => {
     <Layout>
       <section className="container">
         <div className="listOfUsers">
-          {user.users?.length > 0
-            ? user.users.map((user) => {
+          {users.users?.length > 0
+            ? users.users.map((user) => {
                 return (
                   <User
                     key={user.uid}
@@ -114,10 +123,12 @@ const HomePage = (props) => {
           <div className="chatHeader">{chatStarted ? chatUser : null}</div>
           <div className="messageSections">
             {chatStarted ? 
-            user.conversations.map((con,index)=>
+            users.conversations.map((con,index)=>
                 (
               <div key={index} style={{ textAlign: con.user_uid_1 === auth.uid ? "right" : "left" }}>
+                
                 {
+                    
                     (con.user_uid_1 === userUid || con.user_uid_2 === userUid) ?<p className="messageStyle">
                         {con.message}
                     </p> : null

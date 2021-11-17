@@ -47,7 +47,7 @@ export const updateMessage = (message) => {
   };
 };
 
-export const getRealtimeConversations = (user) => {
+export const getRealtimeConversations = (user,chatUser) => {
   return async (dispatch) => {
     db.collection("conversation")
       .where("user_uid_1", "in", [user.uid_1, user.uid_2])
@@ -63,13 +63,29 @@ export const getRealtimeConversations = (user) => {
           ) {
             conversations.push(doc.data());
             // console.log(doc.data().user_uid_1, doc.data().user_uid_2);
+            
           }
         })
         dispatch({
           type: userConstants.GET_REALTIME_MESSAGES,
-          payload: { conversations },
+          payload: { conversations,chatUser },
         });
+        
       }, (err)=>console.log(err));
     //user_uid_1 === "myid" and user_uid_2 = your id or user=uid_1 = yourid and user=uid_2 = myid
   };
 };
+
+
+export const isViewed = (con) => {
+  return async (dispatch) => {
+    console.log(con)
+   
+          dispatch({
+            type:userConstants.NON_VIEWED_MESSAGES,
+
+          })
+        }
+
+
+}
