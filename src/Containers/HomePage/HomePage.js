@@ -6,9 +6,9 @@ import { getRealtimeConversations, getRealtimeUsers, isViewed, updateMessage } f
 import "./style.css";
 
 const User = (props) => {
-  const { user, onClick } = props;
+  const { user, onClick,convo } = props;
   return (
-    <div onClick={() => onClick(user)} className="displayName">
+    <div onClick={() => onClick(user,convo)} className="displayName">
       <div className="displayPic">
         <img
           src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"
@@ -41,11 +41,11 @@ const HomePage = (props) => {
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
   const [message, setMessage] = useState("");
-  const [convo, setConvo] = useState([]);
+  // const [convo, setConvo] = useState([]);
   const [userUid, setUserUid] = useState(null);
   let unsubscribe;
 
-  console.log(users.conversations,userUid)
+  // console.log(users.conversations,userUid)
 
 
 
@@ -66,16 +66,19 @@ const HomePage = (props) => {
     };
   }, []);
 
-  
+  console.log(users.conversations)
+  console.log(userUid)
+  console.log(chatUser)
 
-  const initChat = async (user) => {
+  const initChat = async (user,convo) => {
 
     setChatStarted(true);
     setChatUser(`${user.firstName} ${user.lastName}`);
     setUserUid(user.uid);
 
 
-    setTimeout(()=>dispatch(isViewed()),2000) 
+    dispatch(isViewed(convo)) 
+    
     
 
   };
@@ -113,6 +116,7 @@ const HomePage = (props) => {
                   <User
                     key={user.uid}
                     user={user}
+                    convo={users.conversations}
                     onClick={initChat}
                   />
                 );

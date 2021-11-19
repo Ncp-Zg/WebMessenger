@@ -1,4 +1,5 @@
-import { db } from "../../firebase";
+import { connectAdvanced } from "react-redux";
+import { db, storage } from "../../firebase";
 import { userConstants } from "./constants";
 
 export const getRealtimeUsers = (uid) => {
@@ -30,21 +31,44 @@ export const getRealtimeUsers = (uid) => {
 
 export const updateMessage = (message) => {
   return async (dispatch) => {
-    db.collection("conversation")
-      .add({
-        ...message,
+
+    const data = {
+      ...message,
         isView: false,
         createdAt: new Date(),
+    }
+
+    db.collection("conversation")
+    .add(data).then(async (res)=>{
+      const document = await res.get()
+      // const msg ={msgData:document.data(),msgId:document.id};
+      // const uploadRef = storage.ref(`conversation/${document.id}`)
+
+      db.collection("conversation").doc(document.id).update({
+          msgId:document.id
       })
-      .then((data) => {
-        // console.log(data);
-        //success
-        // dispatch({
-        //     type:userConstants.GET_REALTIME_MESSAGES,
-        // })
-      })
-      .catch((err) => console.log(err));
-  };
+     
+    })
+      
+
+    }
+    
+    
+    
+    // .add({
+    //     ...message,
+    //     isView: false,
+    //     createdAt: new Date(),
+    //   })
+    //   .then((data) => {
+    //     // console.log(data);
+    //     //success
+    //     // dispatch({
+    //     //     type:userConstants.GET_REALTIME_MESSAGES,
+    //     // })
+    //   })
+    //   .catch((err) => console.log(err));
+//   };
 };
 
 export const getRealtimeConversations = (user,chatUser) => {
@@ -78,14 +102,14 @@ export const getRealtimeConversations = (user,chatUser) => {
 
 
 export const isViewed = (con) => {
+  console.log(con)
   return async (dispatch) => {
-    console.log(con)
-   
-          dispatch({
-            type:userConstants.NON_VIEWED_MESSAGES,
+    con.forEach(conv=>{
+      db.collection("conversation").doc(conv.msgId)
+      .update({
+        isView:true
+      })
+    })
 
-          })
-        }
 
-
-}
+}}
