@@ -1,4 +1,4 @@
-import { connectAdvanced } from "react-redux";
+
 import { db, storage } from "../../firebase";
 import { userConstants } from "./constants";
 
@@ -74,10 +74,11 @@ export const updateMessage = (message) => {
 export const getRealtimeConversations = (user) => {
   return async (dispatch) => {
     db.collection("conversation")
-      .where("user_uid_1", "in", [user.uid_1, user.uid_2])
+      // .where("user_uid_1", "in", [user.uid_1, user.uid_2])
       .orderBy("createdAt", "asc")
       .onSnapshot((querySnapshot) => {
         const conversations = [];
+        const allmsg=[]
         querySnapshot.forEach((doc) => {
           
           if (
@@ -90,10 +91,19 @@ export const getRealtimeConversations = (user) => {
             // console.log(doc.data().user_uid_1, doc.data().user_uid_2);
             
           }
+
+          if (doc.data().user_uid_2 === user.uid_1){
+            allmsg.push(doc.data())
+          }
         })
         dispatch({
           type: userConstants.GET_REALTIME_MESSAGES,
           payload: { conversations},
+        });
+
+          dispatch({
+          type: userConstants.GET_ALL_MESSAGES,
+          payload: { allmsg},
         });
         
       }, (err)=>console.log(err));
@@ -101,22 +111,25 @@ export const getRealtimeConversations = (user) => {
   };
 };
 
-export const getAllConversations = (id) => {
-  return async (dispatch) => {
-    db.collection("conversation")
-    .get().then(async (res)=>{
-      const allmsg=[]
+// export const getAllConversations = (id) => {
+//   return async (dispatch) => {
+//     db.collection("conversation")
+//     .onSnapshot((res)=>{
+//       const allmsg=[]
 
-      res.forEach((msg)=>{
-        if((msg.data().user_uid_2===id)){
-          const data = msg.data()
-        allmsg.push(data)
-        }
+//       res.forEach((msg)=>{
+//         if((msg.data().user_uid_2===id)){
+//           const data = msg.data()
+//         allmsg.push(data)
+//         }
         
-      })
+//       })
+//       dispatch({
+//         type:userConstants.GET_ALL_MESSAGES,
+//         payload:{allmsg}
+//       })
 
-      console.log(allmsg)
-    })
+//     })
     
       // .onSnapshot((querySnapshot) => {
       //   const allmsg = [];
@@ -135,18 +148,23 @@ export const getAllConversations = (id) => {
         
       // }, (err)=>console.log(err));
     //user_uid_1 === "myid" and user_uid_2 = your id or user=uid_1 = yourid and user=uid_2 = myid
-  };
-};
+//   };
+// };
 
 
 export const isViewed = (con) => {
-  console.log(con)
+  // console.log(con)
   return async (dispatch) => {
     con.forEach(conv=>{
-      db.collection("conversation").doc(conv.msgId)
+
+      if(!conv.isView){
+        db.collection("conversation").doc(conv.msgId)
       .update({
         isView:true
       })
+      }
+
+      
     })
 
 

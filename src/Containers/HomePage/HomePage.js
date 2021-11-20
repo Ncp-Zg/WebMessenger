@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Layout from "../../Components/Layout/Layout";
@@ -30,7 +30,7 @@ const User = (props) => {
           className={user.isOnline ? `onlineStatus` : `onlineStatus off`}
         ></span>
         {/* <span> convo.map(conv=>conv.isView === false)</span> */}
-        {console.log(convo)}
+        {/* {console.log(convo)} */}
       </div>
     </div>
   );
@@ -43,12 +43,12 @@ const HomePage = (props) => {
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
   const [message, setMessage] = useState("");
-  // const [convo, setConvo] = useState([]);
+  const ref = useRef(0);
   const [userUid, setUserUid] = useState(null);
   let unsubscribe;
 
 
-  console.log(users.allmsg)
+  // console.log(users.allmsg)
 
   useEffect(() => {
     unsubscribe = dispatch(getRealtimeUsers(auth.uid))
@@ -75,8 +75,9 @@ const HomePage = (props) => {
     setChatUser(`${user.firstName} ${user.lastName}`);
     setUserUid(user.uid);
 
-
-    dispatch(isViewed(convo)) 
+    
+    
+    
     
     
 
@@ -86,6 +87,7 @@ const HomePage = (props) => {
     const msgObj = {
       user_uid_1: auth.uid,
       user_uid_2: userUid,
+      name:(auth.firstName)+(auth.lastName),
       message,
     };
 
@@ -98,13 +100,25 @@ const HomePage = (props) => {
   };
 //   console.log(userUid)
   useEffect(()=>{
-      if(userUid){
-        //   console.log(userUid)
-        dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid }))
-        dispatch(getAllConversations(auth.uid))
-      }
+      
+    if(userUid){
+      //   console.log(userUid)
+      dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid }))
+      
+    }
+  },[userUid])
 
-  },[userUid,message===""])
+  // useEffect(()=>{
+  //   dispatch(getAllConversations(auth.uid))
+  // },[users.conversations])
+  useEffect(()=>{
+    dispatch(isViewed(users.conversations))
+  },[users.conversations])
+
+
+  ref.current=users.allmsg.filter(msg=>
+    msg.isView === false
+  ).length
 
   return (
     <Layout>
@@ -121,7 +135,19 @@ const HomePage = (props) => {
                   />
                 );
               })
-            : null}
+            : null}<hr/>
+
+            {
+              users.allmsg.map((msg,index) => {
+                if(!msg.isView){
+                return (<p key={index}>{msg.name}</p>)
+              }
+            }
+            )
+            }
+        
+                  <p>Okunmamış {ref.current} yeni mesajınız var</p>
+          
         </div>
         <div className="chatArea">
           <div className="chatHeader">{chatStarted ? chatUser : null}</div>
