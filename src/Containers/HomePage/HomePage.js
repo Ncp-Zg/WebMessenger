@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Layout from "../../Components/Layout/Layout";
-import { getRealtimeConversations, getRealtimeUsers, isViewed, updateMessage } from "../../Redux/Actions";
+import { getAllConversations, getRealtimeConversations, getRealtimeUsers, isViewed, updateMessage } from "../../Redux/Actions";
 import "./style.css";
 
 const User = (props) => {
@@ -29,6 +29,8 @@ const User = (props) => {
         <span
           className={user.isOnline ? `onlineStatus` : `onlineStatus off`}
         ></span>
+        {/* <span> convo.map(conv=>conv.isView === false)</span> */}
+        {console.log(convo)}
       </div>
     </div>
   );
@@ -45,9 +47,8 @@ const HomePage = (props) => {
   const [userUid, setUserUid] = useState(null);
   let unsubscribe;
 
-  // console.log(users.conversations,userUid)
 
-
+  console.log(users.allmsg)
 
   useEffect(() => {
     unsubscribe = dispatch(getRealtimeUsers(auth.uid))
@@ -66,9 +67,7 @@ const HomePage = (props) => {
     };
   }, []);
 
-  console.log(users.conversations)
-  console.log(userUid)
-  console.log(chatUser)
+
 
   const initChat = async (user,convo) => {
 
@@ -101,7 +100,8 @@ const HomePage = (props) => {
   useEffect(()=>{
       if(userUid){
         //   console.log(userUid)
-        dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid },chatUser))
+        dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid }))
+        dispatch(getAllConversations(auth.uid))
       }
 
   },[userUid,message===""])

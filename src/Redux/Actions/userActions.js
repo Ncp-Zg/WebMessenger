@@ -71,7 +71,7 @@ export const updateMessage = (message) => {
 //   };
 };
 
-export const getRealtimeConversations = (user,chatUser) => {
+export const getRealtimeConversations = (user) => {
   return async (dispatch) => {
     db.collection("conversation")
       .where("user_uid_1", "in", [user.uid_1, user.uid_2])
@@ -79,6 +79,7 @@ export const getRealtimeConversations = (user,chatUser) => {
       .onSnapshot((querySnapshot) => {
         const conversations = [];
         querySnapshot.forEach((doc) => {
+          
           if (
             (doc.data().user_uid_1 === user.uid_1 &&
               doc.data().user_uid_2 === user.uid_2) ||
@@ -92,10 +93,47 @@ export const getRealtimeConversations = (user,chatUser) => {
         })
         dispatch({
           type: userConstants.GET_REALTIME_MESSAGES,
-          payload: { conversations,chatUser },
+          payload: { conversations},
         });
         
       }, (err)=>console.log(err));
+    //user_uid_1 === "myid" and user_uid_2 = your id or user=uid_1 = yourid and user=uid_2 = myid
+  };
+};
+
+export const getAllConversations = (id) => {
+  return async (dispatch) => {
+    db.collection("conversation")
+    .get().then(async (res)=>{
+      const allmsg=[]
+
+      res.forEach((msg)=>{
+        if((msg.data().user_uid_2===id)){
+          const data = msg.data()
+        allmsg.push(data)
+        }
+        
+      })
+
+      console.log(allmsg)
+    })
+    
+      // .onSnapshot((querySnapshot) => {
+      //   const allmsg = [];
+      //   querySnapshot.forEach((doc) => {
+          
+          
+      //       allmsg.push(doc.data());
+      //       console.log(allmsg)
+            
+          
+      //   })
+      //   dispatch({
+      //     type: userConstants.GET_ALL_MESSAGES,
+      //     payload: { allmsg},
+      //   });
+        
+      // }, (err)=>console.log(err));
     //user_uid_1 === "myid" and user_uid_2 = your id or user=uid_1 = yourid and user=uid_2 = myid
   };
 };

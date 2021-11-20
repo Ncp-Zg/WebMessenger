@@ -6,7 +6,6 @@ import "./style.css";
 
 const Header = (props) => {
   const auth = useSelector((state) => state.auth);
-  const users = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -18,7 +17,7 @@ const Header = (props) => {
     <header className="header">
       <div style={{ display: "flex" }}>
         <div className="logo">Web Messenger</div>
-        <h1>{users.conversations.find(cv=>cv.isView===false) ? `${users.chatUser}'den msg` : null}</h1>
+        {/* <h1>{users.conversations.find(cv=>cv.isView===false) ? `${users.chatUser}'den msg` : null}</h1> */}
         {!auth.authenticated ? (
           <ul className="leftMenu">
             <li>
