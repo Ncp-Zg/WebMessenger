@@ -34,7 +34,7 @@ export const updateMessage = (message) => {
 
     const data = {
       ...message,
-        isView: false,
+      isView:false,
         createdAt: new Date(),
     }
 
@@ -44,9 +44,9 @@ export const updateMessage = (message) => {
       // const msg ={msgData:document.data(),msgId:document.id};
       // const uploadRef = storage.ref(`conversation/${document.id}`)
 
-      db.collection("conversation").doc(document.id).update({
-          msgId:document.id
-      })
+      // db.collection("conversation").doc(document.id).update({
+      //     msgId:document.id
+      // })
      
     })
       
@@ -73,6 +73,7 @@ export const updateMessage = (message) => {
 
 export const getRealtimeConversations = (user) => {
   return async (dispatch) => {
+    // console.log(user)
     db.collection("conversation")
       // .where("user_uid_1", "in", [user.uid_1, user.uid_2])
       .orderBy("createdAt", "asc")
@@ -88,6 +89,7 @@ export const getRealtimeConversations = (user) => {
               doc.data().user_uid_2 === user.uid_1)
           ) {
             conversations.push(doc.data());
+            // console.log(conversations)
             // console.log(doc.data().user_uid_1, doc.data().user_uid_2);
             
           }
@@ -152,20 +154,35 @@ export const getRealtimeConversations = (user) => {
 // };
 
 
-export const isViewed = (con) => {
+export const isViewed = (uid) => {
   // console.log(con)
   return async (dispatch) => {
-    con.forEach(conv=>{
-
-      if(!conv.isView){
-        db.collection("conversation").doc(conv.msgId)
-      .update({
-        isView:true
+    
+    db.collection("conversation").get().then((res)=>{
+      res.forEach((msg)=>{
+        if(!msg.data().isView && msg.data().user_uid_2 === uid){
+          db.collection("conversation").doc(msg.id).update({
+          isView:true
+        })
+        }
+        
       })
-      }
+
+    })
+
+  // return async (dispatch) => {
+  //   con.forEach(conv=>{
+  //     console.log(conv.msgId)
+
+  //     if(!conv.isView && conv.msgId !== undefined){
+  //       db.collection("conversation").doc(conv.msgId)
+  //     .update({
+  //       isView:true
+  //     })
+  //     }
 
       
-    })
+  //   })
 
 
 }}

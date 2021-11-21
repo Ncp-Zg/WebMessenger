@@ -5,6 +5,7 @@ import Layout from "../../Components/Layout/Layout";
 import { getAllConversations, getRealtimeConversations, getRealtimeUsers, isViewed, updateMessage } from "../../Redux/Actions";
 import "./style.css";
 
+
 const User = (props) => {
   const { user, onClick,convo } = props;
   return (
@@ -48,7 +49,7 @@ const HomePage = (props) => {
   let unsubscribe;
 
 
-  // console.log(users.allmsg)
+  // console.log(users.conversations)
 
   useEffect(() => {
     unsubscribe = dispatch(getRealtimeUsers(auth.uid))
@@ -76,7 +77,8 @@ const HomePage = (props) => {
     setUserUid(user.uid);
 
     
-    
+    // console.log("render")
+    dispatch(isViewed(auth.uid))
     
     
     
@@ -101,8 +103,8 @@ const HomePage = (props) => {
 //   console.log(userUid)
   useEffect(()=>{
       
-    if(userUid){
-      //   console.log(userUid)
+    if(userUid!==null){
+        // console.log("render")
       dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid }))
       
     }
@@ -111,14 +113,27 @@ const HomePage = (props) => {
   // useEffect(()=>{
   //   dispatch(getAllConversations(auth.uid))
   // },[users.conversations])
-  useEffect(()=>{
-    dispatch(isViewed(users.conversations))
-  },[users.conversations])
+  // useEffect(()=>{
+  //   dispatch(isViewed(auth.uid))
+  // },[users.conversations])
 
-
+  // console.log(userUid, users.allmsg)
   ref.current=users.allmsg.filter(msg=>
-    msg.isView === false
+    msg.isView === false && msg.user_uid_1 !== userUid
   ).length
+
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    
+  }
+
+  useEffect(()=>{
+    // console.log(messagesEndRef)
+    scrollToBottom()
+  },[users.conversations])
+  
 
   return (
     <Layout>
@@ -139,7 +154,7 @@ const HomePage = (props) => {
 
             {
               users.allmsg.map((msg,index) => {
-                if(!msg.isView){
+                if(!msg.isView && msg.user_uid_1 !== userUid){
                 return (<p key={index}>{msg.name}</p>)
               }
             }
@@ -155,7 +170,8 @@ const HomePage = (props) => {
             {chatStarted ? 
             users.conversations.map((con,index)=>
                 (
-              <div key={index} style={{ textAlign: con.user_uid_1 === auth.uid ? "right" : "left" }}>
+                  <div key={index}>
+              <div style={{ textAlign: con.user_uid_1 === auth.uid ? "right" : "left" }}>
                 
                 {
                     
@@ -165,11 +181,13 @@ const HomePage = (props) => {
                     }
                 
               </div>
+              <div ref={messagesEndRef}/>
+              </div>
             )
                 )
              : null}
           </div>
-
+<div ref={messagesEndRef}/>
           {chatStarted ? (
             <div className="chatControls">
               <textarea
@@ -180,8 +198,11 @@ const HomePage = (props) => {
               <button onClick={submitMessage}>Send</button>
             </div>
           ) : null}
+        
+        
         </div>
       </section>
+      
     </Layout>
   );
 };
