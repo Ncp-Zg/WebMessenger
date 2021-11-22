@@ -87,9 +87,11 @@ const HomePage = (props) => {
     
 
   };
-
+  
   const submitMessage = (e) => {
-    const msgObj = {
+    console.log(e)
+    if(e.keyCode===13 || e._reactName === "onClick"){
+      const msgObj = {
       user_uid_1: auth.uid,
       user_uid_2: userUid,
       name:(auth.firstName)+(auth.lastName),
@@ -101,6 +103,8 @@ const HomePage = (props) => {
       setMessage("")
     }
 
+    }
+    
     // console.log(msgObj);
   };
 //   console.log(userUid)
@@ -202,11 +206,13 @@ const HomePage = (props) => {
           {chatStarted ? (
             <div className="chatControls">
               <textarea
+              type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="write something"
+                onKeyDown={(e)=>submitMessage(e)}
               />
-              <button onClick={submitMessage}>Send</button>
+              <button type="submit" onClick={submitMessage}>Send</button>
             </div>
           ) : null}
         
