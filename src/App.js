@@ -8,6 +8,7 @@ import PrivateRoute from './Components/PrivateRoute';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { isloggedInUser } from './Redux/Actions';
+import { ToastContainer } from 'react-toastify';
 function App() {
   const auth = useSelector(state=>state.auth)
 
@@ -19,6 +20,7 @@ function App() {
     },[])
   return (
     <div className="App">
+      {/* <ToastContainer /> */}
       <Router>
         <Switch>
           {/* only logged in user can access this home route */}

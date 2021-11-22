@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 import Layout from "../../Components/Layout/Layout";
 import { getAllConversations, getRealtimeConversations, getRealtimeUsers, isViewed, updateMessage } from "../../Redux/Actions";
 import "./style.css";
@@ -44,7 +45,9 @@ const HomePage = (props) => {
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
   const [message, setMessage] = useState("");
+  const [not, setNot] = useState("");
   const ref = useRef(0);
+  const msgref = useRef("");
   const [userUid, setUserUid] = useState(null);
   let unsubscribe;
 
@@ -133,10 +136,18 @@ const HomePage = (props) => {
     // console.log(messagesEndRef)
     scrollToBottom()
   },[users.conversations])
+
+  useEffect(()=>{
+    if(msgref.current!== "" && ref.current !== 0)
+    toast.success(<p>📨 {msgref.current}</p>)
+  },[ref.current])
+
+  console.log(msgref.current)
   
 
   return (
     <Layout>
+      <ToastContainer icon="" />
       <section className="container">
         <div className="listOfUsers">
           {users.users?.length > 0
@@ -155,7 +166,7 @@ const HomePage = (props) => {
             {
               users.allmsg.map((msg,index) => {
                 if(!msg.isView && msg.user_uid_1 !== userUid){
-                return (<p key={index}>{msg.name}</p>)
+                {msgref.current = msg.name + "  " + "  " + msg.message}
               }
             }
             )
