@@ -139,7 +139,7 @@ const HomePage = (props) => {
 
   useEffect(()=>{
     if(msgref.current!== "" && ref.current !== 0)
-    toast.success(<p>📨 {msgref.current}</p>)
+    toast.success(<p style={{marginLeft:"14px"}}>{msgref.current}</p>, {icon : ()=><img style={{width:"40px"}} src="https://cdn.worldvectorlogo.com/logos/google-messages.svg"/>})
   },[ref.current])
 
   console.log(msgref.current)
@@ -147,7 +147,7 @@ const HomePage = (props) => {
 
   return (
     <Layout>
-      <ToastContainer icon="" />
+      <ToastContainer theme="dark" />
       <section className="container">
         <div className="listOfUsers">
           {users.users?.length > 0
@@ -166,7 +166,7 @@ const HomePage = (props) => {
             {
               users.allmsg.map((msg,index) => {
                 if(!msg.isView && msg.user_uid_1 !== userUid){
-                {msgref.current = msg.name + "  " + "  " + msg.message}
+                {msgref.current = msg.name + "  " + " : " + " " + msg.message}
               }
             }
             )
