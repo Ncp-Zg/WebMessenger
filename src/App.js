@@ -8,7 +8,7 @@ import PrivateRoute from './Components/PrivateRoute';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { isloggedInUser } from './Redux/Actions';
-import { ToastContainer } from 'react-toastify';
+// import { ToastContainer } from 'react-toastify';
 function App() {
   const auth = useSelector(state=>state.auth)
 

@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import Layout from "../../Components/Layout/Layout";
 import { getAllConversations, getRealtimeConversations, getRealtimeUsers, isViewed, updateMessage } from "../../Redux/Actions";
 import "./style.css";
-
+import logo from "./google-messages.svg"
 
 const User = (props) => {
   const { user, onClick,convo } = props;
@@ -45,7 +45,6 @@ const HomePage = (props) => {
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
   const [message, setMessage] = useState("");
-  const [not, setNot] = useState("");
   const ref = useRef(0);
   const msgref = useRef("");
   const [userUid, setUserUid] = useState(null);
@@ -143,7 +142,7 @@ const HomePage = (props) => {
 
   useEffect(()=>{
     if(msgref.current!== "" && ref.current !== 0)
-    toast.success(<p style={{marginLeft:"14px"}}>{msgref.current}</p>, {icon : ()=><img style={{width:"40px"}} src="https://cdn.worldvectorlogo.com/logos/google-messages.svg"/>})
+    toast.success(<p style={{marginLeft:"14px"}}>{msgref.current}</p>, {icon : ()=><img style={{width:"40px"}} src={logo}/>})
   },[ref.current])
 
   console.log(msgref.current)
@@ -154,6 +153,13 @@ const HomePage = (props) => {
       <ToastContainer theme="dark" />
       <section className="container">
         <div className="listOfUsers">
+          <div style={{width:"100%",height:"40px",backgroundColor:"#2A2F32"}}>
+
+          </div>
+          <div style={{width:"100%",height:"30px",backgroundColor:"#131C23",display:"flex",justifyContent:"center",alignItems:"center"}}>
+              <input style={{borderRadius:"15px",display:"flex",height:"20px",width:"90%",backgroundColor:"#2A2F32",borderStyle:"none"}}/>
+          </div>
+          <div style={{backgroundColor:"#131C23", color:"white"}}>
           {users.users?.length > 0
             ? users.users.map((user) => {
                 return (
@@ -165,7 +171,10 @@ const HomePage = (props) => {
                   />
                 );
               })
-            : null}<hr/>
+            : null}
+            <div ref={messagesEndRef}/>
+            </div>
+            <hr/>
 
             {
               users.allmsg.map((msg,index) => {
@@ -176,11 +185,22 @@ const HomePage = (props) => {
             )
             }
         
-                  <p>Okunmamış {ref.current} yeni mesajınız var</p>
+                  <p style={{color:"white"}}>Okunmamış {ref.current} yeni mesajınız var</p>
           
         </div>
         <div className="chatArea">
-          <div className="chatHeader">{chatStarted ? chatUser : null}</div>
+          <div className="chatHeader">
+            <div style={{marginRight:"8px",marginTop:"7px"}}>
+            <img style={{height:"25px",width:"25px",borderRadius:"100%"}}
+          src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"
+          alt=""
+        /></div>
+        <div style={{width:"100%"}}>
+            <div style={{width:"70%",height:"20px",paddingTop:"0px"}}>{chatStarted ? chatUser : null}</div>
+            <div style={{width:"70%",height:"20px",lineHeight:"15px",fontSize:"10px"}}>online</div>
+          </div>
+            
+            </div>
           <div className="messageSections">
             {chatStarted ? 
             users.conversations.map((con,index)=>
@@ -205,7 +225,7 @@ const HomePage = (props) => {
 <div ref={messagesEndRef}/>
           {chatStarted ? (
             <div className="chatControls">
-              <textarea
+              <input
               type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}

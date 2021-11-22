@@ -9,34 +9,43 @@
     width: 30%;
     height: 100%;
     overflow-x: hidden;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid rgb(61, 60, 60);
+    background-color:#131C23
 }
 .chatArea{
     width: 70%;
     height: 100%;
     overflow-x: hidden;
     position: relative;
+    background-image: url('1288076.jpg')
 }
 .chatHeader{
     position: fixed;
+    display: flex;
     width: 70%;
     height: 40px;
-    background: #e2e0e0;
-    text-align: center;
-    line-height: 40px;
-    color: #000;
+    background: #2A2F32;
+    /* text-align: start; */
+    line-height: 30px;
+    color: rgb(255, 255, 255);
     font-weight: bold;
     font-family: sans-serif;
+    padding-left: 8px;
+
 }
 .chatControls{
     display: flex;
     position: fixed;
+    justify-content: center;
     width: 70%;
-    height: 50px;
+    height: 35px;
     bottom: 0;
+    margin-bottom: 10px;
 }
-.chatControls textarea{
-    width: 90%;
+.chatControls input{
+    border-radius: 20px;
+    width: 80%;
+    border-style: none;
 }
 .chatControls button{
     width: 10%;
