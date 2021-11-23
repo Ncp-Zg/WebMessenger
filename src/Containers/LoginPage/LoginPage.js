@@ -6,6 +6,7 @@ import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
 import { isloggedInUser, signIn } from "../../Redux/Actions/authActions";
 import { Redirect } from "react-router";
+import Header from "../../Components/Header/Header";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -40,6 +41,7 @@ const LoginPage = () => {
   }
   return (
     <Layout>
+      <Header/>
       <div className="loginContainer">
         <Card>
           <form onSubmit={userLogin}>

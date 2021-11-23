@@ -13,7 +13,7 @@ import {
 } from "../../Redux/Actions";
 import "./style.css";
 import logo from "./google-messages.svg";
-import { MdEmojiEmotions, MdLogout, MdSearch, MdSend } from "react-icons/md";
+import { MdCheckCircle, MdCheckCircleOutline, MdEmojiEmotions, MdLogout, MdSearch, MdSend } from "react-icons/md";
 
 const User = (props) => {
   const { user, onClick, convo } = props;
@@ -314,7 +314,20 @@ const HomePage = (props) => {
                       {con.user_uid_1 === userUid ? (
                         <p className="messageStyle1">{con.message}</p>
                       ) : con.user_uid_2 === userUid ? (
-                        <p className="messageStyle">{con.message}</p>
+                        <p className="messageStyle">
+                          {
+                            con.isView ? <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                              <p>{con.message}</p>
+                              <MdCheckCircle style={{marginLeft:"5px",fontSize:"12px"}}/>
+
+                            </div> : <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+                            <p>{con.message}</p>
+                              <MdCheckCircleOutline style={{marginLeft:"5px",fontSize:"12px"}}/>
+
+                            </div>
+                          }
+                          
+                          </p>
                       ) : null}
                     </div>
                     <div ref={messagesEndRef} />

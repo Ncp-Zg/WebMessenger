@@ -5,6 +5,7 @@ import {signup} from "../../Redux/Actions"
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../firebase";
 import { Redirect } from "react-router";
+import Header from "../../Components/Header/Header";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -30,6 +31,7 @@ const Register = () => {
 
   return (
     <Layout>
+      <Header/>
       <div className="registerContainer">
         <Card>
           <form onSubmit={registerUser}>
