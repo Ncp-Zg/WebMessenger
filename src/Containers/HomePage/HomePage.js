@@ -13,7 +13,7 @@ import {
 } from "../../Redux/Actions";
 import "./style.css";
 import logo from "./google-messages.svg";
-import { MdLogout, MdSearch } from "react-icons/md";
+import { MdEmojiEmotions, MdLogout, MdSearch, MdSend } from "react-icons/md";
 
 const User = (props) => {
   const { user, onClick, convo } = props;
@@ -205,7 +205,9 @@ const HomePage = (props) => {
               alignItems: "center",
             }}
           >
-            <MdSearch style={{position:"absolute",left:"20px",color:"gray"}}/>
+            <MdSearch
+              style={{ position: "absolute", left: "30px", color: "gray" }}
+            />
             <input
               className="searchinput"
               placeholder="Search..."
@@ -323,6 +325,9 @@ const HomePage = (props) => {
           <div ref={messagesEndRef} />
           {chatStarted ? (
             <div className="chatControls">
+              <MdEmojiEmotions
+                style={{ marginRight: "15px", fontSize: "25px", color: "gray" }}
+              />
               <input
                 type="text"
                 value={message}
@@ -330,9 +335,18 @@ const HomePage = (props) => {
                 placeholder="write something"
                 onKeyDown={(e) => submitMessage(e)}
               />
-              <button type="submit" onClick={submitMessage}>
-                Send
-              </button>
+              <MdSend
+                type="submit"
+                style={{
+                  marginLeft: "20px",
+                  backgroundColor: "green",
+                  borderRadius: "100%",
+                  padding: "4px",
+                  color: "white",
+                  fontSize: "20px",
+                }}
+                onClick={submitMessage}
+              />
             </div>
           ) : null}
         </div>
