@@ -8,9 +8,11 @@ import "./style.css";
 import logo from "./google-messages.svg"
 
 const User = (props) => {
+
   const { user, onClick,convo } = props;
+
   return (
-    <div onClick={() => onClick(user,convo)} className="displayName">
+    <div onClick={(e) => onClick(user,convo)} className="displayName" tabIndex="1">
       <div className="displayPic">
         <img
           src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"
@@ -45,6 +47,7 @@ const HomePage = (props) => {
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
   const [message, setMessage] = useState("");
+ 
   const ref = useRef(0);
   const msgref = useRef("");
   const [userUid, setUserUid] = useState(null);
@@ -157,7 +160,7 @@ const HomePage = (props) => {
 
           </div>
           <div style={{width:"100%",height:"30px",backgroundColor:"#131C23",display:"flex",justifyContent:"center",alignItems:"center"}}>
-              <input style={{borderRadius:"15px",display:"flex",height:"20px",width:"90%",backgroundColor:"#2A2F32",borderStyle:"none"}}/>
+              <input className="searchinput" style={{borderRadius:"20px",display:"flex",height:"20px",width:"90%",backgroundColor:"#43474b",borderStyle:"none",caretColor:"white",paddingLeft:"10px"}}/>
           </div>
           <div style={{backgroundColor:"#131C23", color:"white"}}>
           {users.users?.length > 0
@@ -210,7 +213,9 @@ const HomePage = (props) => {
                 
                 {
                     
-                    (con.user_uid_1 === userUid || con.user_uid_2 === userUid) ?<p className="messageStyle">
+                    (con.user_uid_1 === userUid ) ?<p className="messageStyle1">
+                        {con.message}
+                    </p> :( con.user_uid_2 === userUid) ? <p className="messageStyle">
                         {con.message}
                     </p> : null
                     }

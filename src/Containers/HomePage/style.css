@@ -2,7 +2,7 @@
     display: flex;
     position: absolute;
     width: 100%;
-    height: calc(100% - 60px);
+    height: 100%;
     overflow: hidden;
 }
 .listOfUsers{
@@ -38,14 +38,22 @@
     position: fixed;
     justify-content: center;
     width: 70%;
-    height: 35px;
+    height: 40px;
     bottom: 0;
-    margin-bottom: 10px;
+    background-color: #2A2F32;
+    align-items: center;
 }
 .chatControls input{
     border-radius: 20px;
+    height: 25px;
     width: 80%;
     border-style: none;
+    background-color: #43474b;
+    caret-color: white;
+    padding-left: 10px;
+}
+.chatControls input:focus{
+    outline: none;
 }
 .chatControls button{
     width: 10%;
@@ -57,6 +65,9 @@
     padding: 5px 10px;
     box-sizing: border-box;
     cursor: pointer;
+}
+.displayName:focus{
+    background-color: #43474b;
 }
 
 .displayName.active{
@@ -77,12 +88,22 @@
 }
 
 .messageStyle{
-    background: skyblue;
+    background: #103631;
     display: inline-block;
     padding: 5px 10px;
     border-radius: 10px;
     margin: 5px;
     display: inline-block;
+    color: white;
+}
+.messageStyle1{
+    background: #43474b;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin: 5px;
+    display: inline-block;
+    color: white;
 }
 
 .messageSections{
@@ -105,4 +126,9 @@
 .onlineStatus.off{
     background : green;
     box-shadow : 0 0 0 0 ;
+}
+
+
+.searchinput:focus {
+    outline: none;
 }
