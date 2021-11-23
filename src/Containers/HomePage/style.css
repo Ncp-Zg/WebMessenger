@@ -1,3 +1,18 @@
+.messageSections::-webkit-scrollbar {
+    width: 0.2em;
+  }
+   
+  .messageSections::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  .messageSections::-webkit-scrollbar-thumb {
+    background-color: rgb(189, 92, 28);
+    /* outline: 1px solid slategrey; */
+  }
+  
+  
+
 .container{
     display: flex;
     position: absolute;
@@ -107,7 +122,7 @@
 }
 
 .messageSections{
-    height: calc(100% - 90px);
+    height: calc(100% - 80px);
     width: 100%;
     overflow-x: hidden;
     position: relative;
@@ -132,3 +147,4 @@
 .searchinput:focus {
     outline: none;
 }
+

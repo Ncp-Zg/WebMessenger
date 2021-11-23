@@ -3,16 +3,27 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import Layout from "../../Components/Layout/Layout";
-import { getAllConversations, getRealtimeConversations, getRealtimeUsers, isViewed, updateMessage } from "../../Redux/Actions";
+import {
+  getAllConversations,
+  getRealtimeConversations,
+  getRealtimeUsers,
+  isViewed,
+  logout,
+  updateMessage,
+} from "../../Redux/Actions";
 import "./style.css";
-import logo from "./google-messages.svg"
+import logo from "./google-messages.svg";
+import { MdLogout, MdSearch } from "react-icons/md";
 
 const User = (props) => {
-
-  const { user, onClick,convo } = props;
+  const { user, onClick, convo } = props;
 
   return (
-    <div onClick={(e) => onClick(user,convo)} className="displayName" tabIndex="1">
+    <div
+      onClick={(e) => onClick(user, convo)}
+      className="displayName"
+      tabIndex="1"
+    >
       <div className="displayPic">
         <img
           src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"
@@ -46,13 +57,13 @@ const HomePage = (props) => {
   const users = useSelector((state) => state.user);
   const [chatStarted, setChatStarted] = useState(false);
   const [chatUser, setChatUser] = useState("");
+  const [online, setOnline] = useState(false);
   const [message, setMessage] = useState("");
- 
+
   const ref = useRef(0);
   const msgref = useRef("");
   const [userUid, setUserUid] = useState(null);
   let unsubscribe;
-
 
   // console.log(users.conversations)
 
@@ -62,7 +73,6 @@ const HomePage = (props) => {
         return unsubscribe;
       })
       .catch((err) => console.log(err));
-
   }, []);
 
   useEffect(() => {
@@ -73,51 +83,41 @@ const HomePage = (props) => {
     };
   }, []);
 
-
-
-  const initChat = async (user,convo) => {
-
+  const initChat = async (user, convo) => {
     setChatStarted(true);
     setChatUser(`${user.firstName} ${user.lastName}`);
     setUserUid(user.uid);
+    setOnline(user.isOnline);
 
-    
     // console.log("render")
-    dispatch(isViewed(auth.uid))
-    
-    
-    
-
+    dispatch(isViewed(auth.uid));
   };
-  
+
   const submitMessage = (e) => {
-    console.log(e)
-    if(e.keyCode===13 || e._reactName === "onClick"){
+    console.log(e);
+    if (e.keyCode === 13 || e._reactName === "onClick") {
       const msgObj = {
-      user_uid_1: auth.uid,
-      user_uid_2: userUid,
-      name:(auth.firstName)+(auth.lastName),
-      message,
-    };
+        user_uid_1: auth.uid,
+        user_uid_2: userUid,
+        name: auth.firstName + auth.lastName,
+        message,
+      };
 
-    if (message !== "") {
-      dispatch(updateMessage(msgObj))
-      setMessage("")
+      if (message !== "") {
+        dispatch(updateMessage(msgObj));
+        setMessage("");
+      }
     }
 
-    }
-    
     // console.log(msgObj);
   };
-//   console.log(userUid)
-  useEffect(()=>{
-      
-    if(userUid!==null){
-        // console.log("render")
-      dispatch(getRealtimeConversations({uid_1:auth.uid,uid_2:userUid }))
-      
+  //   console.log(userUid)
+  useEffect(() => {
+    if (userUid !== null) {
+      // console.log("render")
+      dispatch(getRealtimeConversations({ uid_1: auth.uid, uid_2: userUid }));
     }
-  },[userUid])
+  }, [userUid]);
 
   // useEffect(()=>{
   //   dispatch(getAllConversations(auth.uid))
@@ -127,124 +127,216 @@ const HomePage = (props) => {
   // },[users.conversations])
 
   // console.log(userUid, users.allmsg)
-  ref.current=users.allmsg.filter(msg=>
-    msg.isView === false && msg.user_uid_1 !== userUid
-  ).length
+  ref.current = users.allmsg.filter(
+    (msg) => msg.isView === false && msg.user_uid_1 !== userUid
+  ).length;
 
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-    
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     // console.log(messagesEndRef)
-    scrollToBottom()
-  },[users.conversations])
+    scrollToBottom();
+  }, [users.conversations]);
 
-  useEffect(()=>{
-    if(msgref.current!== "" && ref.current !== 0)
-    toast.success(<p style={{marginLeft:"14px"}}>{msgref.current}</p>, {icon : ()=><img style={{width:"40px"}} src={logo}/>})
-  },[ref.current])
+  useEffect(() => {
+    if (msgref.current !== "" && ref.current !== 0)
+      toast.success(<p style={{ marginLeft: "14px" }}>{msgref.current}</p>, {
+        icon: () => <img style={{ width: "40px" }} src={logo} />,
+      });
+  }, [ref.current]);
 
-  console.log(msgref.current)
-  
+  console.log(msgref.current);
 
   return (
     <Layout>
       <ToastContainer theme="dark" />
       <section className="container">
         <div className="listOfUsers">
-          <div style={{width:"100%",height:"40px",backgroundColor:"#2A2F32"}}>
-
+          <div
+            style={{
+              width: "100%",
+              height: "40px",
+              backgroundColor: "#2A2F32",
+              alignItems: "center",
+            }}
+          >
+            <p>
+              {auth.authenticated ? (
+                <p
+                  style={{
+                    color: "orange",
+                    float: "left",
+                    paddingLeft: "5px",
+                    paddingTop: "7px",
+                  }}
+                >
+                  {auth.firstName} {auth.lastName}
+                </p>
+              ) : null}
+            </p>
+            {auth.authenticated ? (
+              <MdLogout
+                style={{
+                  paddingTop: "7px",
+                  color: "red",
+                  float: "right",
+                  justifySelf: "flex-end",
+                  marginRight: "8px",
+                  fontSize: "25px",
+                  cursor: "pointer",
+                }}
+                onClick={() => dispatch(logout(auth.uid))}
+              >
+                Logout
+              </MdLogout>
+            ) : null}
           </div>
-          <div style={{width:"100%",height:"30px",backgroundColor:"#131C23",display:"flex",justifyContent:"center",alignItems:"center"}}>
-              <input className="searchinput" style={{borderRadius:"20px",display:"flex",height:"20px",width:"90%",backgroundColor:"#43474b",borderStyle:"none",caretColor:"white",paddingLeft:"10px"}}/>
+          <div
+            style={{
+              width: "100%",
+              height: "30px",
+              backgroundColor: "#131C23",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <MdSearch style={{position:"absolute",left:"20px",color:"gray"}}/>
+            <input
+              className="searchinput"
+              placeholder="Search..."
+              style={{
+                borderRadius: "20px",
+                display: "flex",
+                height: "20px",
+                width: "80%",
+                backgroundColor: "#43474b",
+                borderStyle: "none",
+                caretColor: "white",
+                paddingLeft: "30px",
+              }}
+            />
           </div>
-          <div style={{backgroundColor:"#131C23", color:"white"}}>
-          {users.users?.length > 0
-            ? users.users.map((user) => {
-                return (
-                  <User
-                    key={user.uid}
-                    user={user}
-                    convo={users.conversations}
-                    onClick={initChat}
-                  />
-                );
-              })
-            : null}
-            <div ref={messagesEndRef}/>
-            </div>
-            <hr/>
+          <div style={{ backgroundColor: "#131C23", color: "white" }}>
+            {users.users?.length > 0
+              ? users.users.map((user) => {
+                  return (
+                    <User
+                      key={user.uid}
+                      user={user}
+                      convo={users.conversations}
+                      onClick={initChat}
+                    />
+                  );
+                })
+              : null}
+            <div ref={messagesEndRef} />
+          </div>
+          <hr />
 
-            {
-              users.allmsg.map((msg,index) => {
-                if(!msg.isView && msg.user_uid_1 !== userUid){
-                {msgref.current = msg.name + "  " + " : " + " " + msg.message}
+          {users.allmsg.map((msg, index) => {
+            if (!msg.isView && msg.user_uid_1 !== userUid) {
+              {
+                msgref.current = msg.name + "  " + " : " + " " + msg.message;
               }
             }
-            )
-            }
-        
-                  <p style={{color:"white"}}>Okunmamış {ref.current} yeni mesajınız var</p>
-          
+          })}
+
+          <p style={{ color: "white" }}>
+            Okunmamış {ref.current} yeni mesajınız var
+          </p>
         </div>
         <div className="chatArea">
           <div className="chatHeader">
-            <div style={{marginRight:"8px",marginTop:"7px"}}>
-            <img style={{height:"25px",width:"25px",borderRadius:"100%"}}
-          src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"
-          alt=""
-        /></div>
-        <div style={{width:"100%"}}>
-            <div style={{width:"70%",height:"20px",paddingTop:"0px"}}>{chatStarted ? chatUser : null}</div>
-            <div style={{width:"70%",height:"20px",lineHeight:"15px",fontSize:"10px"}}>online</div>
-          </div>
-            
+            <div style={{ marginRight: "8px", marginTop: "7px" }}>
+              {chatStarted ? (
+                <img
+                  style={{
+                    height: "25px",
+                    width: "25px",
+                    borderRadius: "100%",
+                  }}
+                  src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"
+                  alt=""
+                />
+              ) : null}
             </div>
-          <div className="messageSections">
-            {chatStarted ? 
-            users.conversations.map((con,index)=>
-                (
-                  <div key={index}>
-              <div style={{ textAlign: con.user_uid_1 === auth.uid ? "right" : "left" }}>
-                
-                {
-                    
-                    (con.user_uid_1 === userUid ) ?<p className="messageStyle1">
-                        {con.message}
-                    </p> :( con.user_uid_2 === userUid) ? <p className="messageStyle">
-                        {con.message}
-                    </p> : null
-                    }
-                
+
+            {online ? (
+              <div style={{ width: "100%" }}>
+                <div
+                  style={{ width: "70%", height: "20px", paddingTop: "0px" }}
+                >
+                  {chatStarted ? chatUser : null}
+                </div>
+                <div
+                  style={{
+                    width: "70%",
+                    height: "20px",
+                    lineHeight: "15px",
+                    fontSize: "10px",
+                  }}
+                >
+                  online
+                </div>
               </div>
-              <div ref={messagesEndRef}/>
+            ) : (
+              <div style={{ width: "100%" }}>
+                <div
+                  style={{
+                    width: "70%",
+                    height: "40px",
+                    paddingTop: "0px",
+                    lineHeight: "35px",
+                  }}
+                >
+                  {chatStarted ? chatUser : null}
+                </div>
               </div>
-            )
-                )
-             : null}
+            )}
           </div>
-<div ref={messagesEndRef}/>
+          <div className="messageSections">
+            {chatStarted
+              ? users.conversations.map((con, index) => (
+                  <div key={index}>
+                    <div
+                      style={{
+                        textAlign:
+                          con.user_uid_1 === auth.uid ? "right" : "left",
+                      }}
+                    >
+                      {con.user_uid_1 === userUid ? (
+                        <p className="messageStyle1">{con.message}</p>
+                      ) : con.user_uid_2 === userUid ? (
+                        <p className="messageStyle">{con.message}</p>
+                      ) : null}
+                    </div>
+                    <div ref={messagesEndRef} />
+                  </div>
+                ))
+              : null}
+          </div>
+          <div ref={messagesEndRef} />
           {chatStarted ? (
             <div className="chatControls">
               <input
-              type="text"
+                type="text"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="write something"
-                onKeyDown={(e)=>submitMessage(e)}
+                onKeyDown={(e) => submitMessage(e)}
               />
-              <button type="submit" onClick={submitMessage}>Send</button>
+              <button type="submit" onClick={submitMessage}>
+                Send
+              </button>
             </div>
           ) : null}
-        
-        
         </div>
       </section>
-      
     </Layout>
   );
 };
