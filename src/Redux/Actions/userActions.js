@@ -154,13 +154,13 @@ export const getRealtimeConversations = (user) => {
 // };
 
 
-export const isViewed = (uid) => {
+export const isViewed = (uid,userUid) => {
   // console.log(con)
   return async (dispatch) => {
     
     db.collection("conversation").get().then((res)=>{
       res.forEach((msg)=>{
-        if(!msg.data().isView && msg.data().user_uid_2 === uid){
+        if(!msg.data().isView && msg.data().user_uid_2 === uid && msg.data().user_uid_1 === userUid){
           db.collection("conversation").doc(msg.id).update({
           isView:true
         })

@@ -88,13 +88,18 @@ const HomePage = (props) => {
     setChatUser(`${user.firstName} ${user.lastName}`);
     setUserUid(user.uid);
     setOnline(user.isOnline);
-
-    // console.log("render")
-    dispatch(isViewed(auth.uid));
+    
+    dispatch(isViewed(auth.uid,user.uid));
   };
 
+  // console.log(users.conversations)
+  useEffect(()=>{
+    // console.log("render")
+    dispatch(isViewed(auth.uid,userUid));
+  },[users.conversations])
+
   const submitMessage = (e) => {
-    console.log(e);
+    // console.log(e);
     if (e.keyCode === 13 || e._reactName === "onClick") {
       const msgObj = {
         user_uid_1: auth.uid,
@@ -149,7 +154,7 @@ const HomePage = (props) => {
       });
   }, [ref.current]);
 
-  console.log(msgref.current);
+// console.log(users.conversations)
 
   return (
     <Layout>
