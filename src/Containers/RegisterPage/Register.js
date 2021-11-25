@@ -91,13 +91,13 @@ console.log(values);
       <div className="registerContainer">
         <Card>
           <form onSubmit={registerUser}>
-            <h3>Sign Up</h3>
+            <h3 style={{display:"flex",justifyContent:"center",marginBottom:"15px"}}>Sign Up</h3>
 
             {inputs.map((inpt) => (
               <RegisterComponent value={values[inpt.name]} {...inpt} handleChange={handleChange}/>
             ))}
-            <div>
-              <button type="submit">SignUp</button>
+            <div style={{display:"flex",justifyContent:"center"}}>
+              <button className="btn btn-success " type="submit">SignUp</button>
             </div>
           </form>
         </Card>

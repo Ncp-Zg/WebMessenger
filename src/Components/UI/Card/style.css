@@ -5,4 +5,5 @@
     box-shadow: 0 0 5px 1px #ccc;
     display: flex;
     justify-content: center;
+    padding: 20px;
 }

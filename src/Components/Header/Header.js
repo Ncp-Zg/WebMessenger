@@ -14,17 +14,17 @@ const Header = (props) => {
   // }
 
   return (
-    <header className="header">
-      <div style={{ display: "flex" }}>
-        <div className="logo">Web Messenger</div>
+    <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+      <div className="container-fluid" >
+        <div class="navbar-brand text-warning">Chat App</div>
         {/* <h1>{users.conversations.find(cv=>cv.isView===false) ? `${users.chatUser}'den msg` : null}</h1> */}
         {!auth.authenticated ? (
-          <ul className="leftMenu">
-            <li>
-              <NavLink to={"/login"}>Login</NavLink>
+          <ul className="navbar-nav">
+            <li className="navbar-item">
+              <NavLink className="nav-link active text-success" to={"/login"}>Login</NavLink>
             </li>
             <li>
-              <NavLink to={"/signup"}>Sign up</NavLink>
+              <NavLink className="nav-link active text-success" to={"/signup"}>Sign up</NavLink>
             </li>
           </ul>
         ) : null}
@@ -40,7 +40,7 @@ const Header = (props) => {
         ) : null}
         <li></li>
       </ul>
-    </header>
+    </nav>
   );
 };
 
