@@ -252,10 +252,12 @@ const HomePage = (props) => {
               }
             }
           })}
-
-          <p style={{ color: "white" }}>
+          {
+            ref.current ? <p style={{ color: "white" }}>
             Okunmamış {ref.current} yeni mesajınız var
-          </p>
+          </p> : null
+          }
+          
         </div>
         <div className="chatArea">
           <div className="chatHeader">
