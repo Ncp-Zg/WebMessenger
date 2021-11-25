@@ -1,4 +1,4 @@
-/* .header{
+.header{
     width: 100%;
     position: relative;
     height: 60px;
@@ -6,9 +6,9 @@
     background: #1b5ff9;
     justify-content: space-between;
     box-sizing: border-box;
-} */
+}
 
-/* .logo{
+.logo{
     font-size: 20px;
     color: #fff;
     text-transform: capitalize;
@@ -45,4 +45,4 @@
 
 .leftMenu > li > a.active{
     font-weight: bold;
-} */
+}

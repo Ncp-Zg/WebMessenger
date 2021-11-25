@@ -19,12 +19,12 @@ const Header = (props) => {
         <div class="navbar-brand text-warning">Chat App</div>
         {/* <h1>{users.conversations.find(cv=>cv.isView===false) ? `${users.chatUser}'den msg` : null}</h1> */}
         {!auth.authenticated ? (
-          <ul className="navbar-nav">
-            <li className="navbar-item">
-              <NavLink className="nav-link active text-success" to={"/login"}>Login</NavLink>
+          <ul className="nav nav-tabs">
+            <li className="nav-item">
+              <NavLink className=" nav-link text-success bg-dark " to={"/login"}>Login</NavLink>
             </li>
             <li>
-              <NavLink className="nav-link active text-success" to={"/signup"}>Sign up</NavLink>
+              <NavLink className="nav-link text-success bg-dark" to={"/signup"}>Sign up</NavLink>
             </li>
           </ul>
         ) : null}

@@ -5,7 +5,7 @@ const RegisterComponent = (props) => {
     const [focused, setFocused] = useState(false);
     const{errorMessage, ...rest} = props;
     return (
-        <div className="form-floating mb-3">
+        <div className="form-floating mb-2">
             {/* <p>{rest.placeholder}</p> */}
                 <input type="email" className="form-control" id="floatingInput"
                 {...rest}

@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { auth, db } from "../../firebase";
 import { authConstants } from "./constants";
 
@@ -94,9 +95,10 @@ export const signIn = (user) => {
               type: `${authConstants.USER_LOGIN}_FAILURE`,
               payload: { error },
             });
+            toast.error("Email ya da şifre hatalı!!")
           });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {console.log(err);toast.error("Email ya da şifre hatalı!!")});
   };
 };
 

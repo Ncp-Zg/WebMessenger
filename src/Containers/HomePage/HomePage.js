@@ -36,11 +36,13 @@ const User = (props) => {
           flex: 1,
           justifyContent: "space-between",
           margin: "0 10px",
+          alignItems:"center",
+          alignSelf:"center"
         }}
       >
-        <span style={{ fontWeight: 500 }}>
+        <p className="m-0">
           {user.firstName} {user.lastName}
-        </span>
+        </p>
         <span
           className={user.isOnline ? `onlineStatus` : `onlineStatus off`}
         ></span>
@@ -308,7 +310,7 @@ const HomePage = (props) => {
               </div>
             )}
           </div>
-          <div className="messageSections">
+          <div className="messageSections ">
             {chatStarted
               ? users.conversations.map((con, index) => (
                   <div key={index}>

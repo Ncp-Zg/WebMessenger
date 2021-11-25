@@ -23,13 +23,14 @@ export const authReducer= (state = initState, action) => {
         ...action.payload.user,
         authenticated: true,
         authenticating: false,
+        error:null
       });
     case `${authConstants.USER_LOGIN}_FAILURE`:
       return (state = {
         ...state,
         authenticated: false,
         authenticating: false,
-        error: action.payload.err,
+        error: action.payload.error,
       });
     case `${authConstants.USER_LOGOUT}_REQUEST`:
     case `${authConstants.USER_LOGOUT}_SUCCESS`:

@@ -93,8 +93,8 @@ console.log(values);
           <form onSubmit={registerUser}>
             <h3 style={{display:"flex",justifyContent:"center",marginBottom:"15px"}}>Sign Up</h3>
 
-            {inputs.map((inpt) => (
-              <RegisterComponent value={values[inpt.name]} {...inpt} handleChange={handleChange}/>
+            {inputs.map((inpt,index) => (
+              <RegisterComponent key={index} value={values[inpt.name]} {...inpt} handleChange={handleChange}/>
             ))}
             <div style={{display:"flex",justifyContent:"center"}}>
               <button className="btn btn-success " type="submit">SignUp</button>
