@@ -48,7 +48,7 @@ const Register = () => {
     {
       name: "password",
       type: "password",
-      errorMessage: "It should be ",
+      errorMessage: "Should include atleast 1 letter, 1 number,1 special char and must be greater than 8",
       pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
       placeholder: "Password",
       required: true,

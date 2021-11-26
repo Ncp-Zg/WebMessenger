@@ -13,7 +13,7 @@ import {
 } from "../../Redux/Actions";
 import "./style.css";
 import logo from "./google-messages.svg";
-import { MdCheckCircle, MdCheckCircleOutline, MdEmojiEmotions, MdLogout, MdSearch, MdSend } from "react-icons/md";
+import { MdCheckCircle, MdCheckCircleOutline, MdEmojiEmotions, MdLogout, MdSearch, MdSend, MdZoomIn } from "react-icons/md";
 
 const User = (props) => {
   const { user, onClick, convo } = props;
@@ -161,7 +161,7 @@ const HomePage = (props) => {
   return (
     <Layout>
       <ToastContainer theme="dark" />
-      <section className="container">
+      <section className="container1">
         <div className="listOfUsers">
           <div
             style={{
@@ -171,9 +171,20 @@ const HomePage = (props) => {
               alignItems: "center",
             }}
           >
-            <p>
+            <div>
+            {auth.authenticated ? (
+                <img style={{
+                  height: "25px",
+                  float:"left",
+                  width: "25px",
+                  borderRadius: "100%",
+                  marginTop:"7px",
+                  marginLeft:"5px"
+                }} src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"/>
+              ) : null}
+              
               {auth.authenticated ? (
-                <p
+                <div
                   style={{
                     color: "orange",
                     float: "left",
@@ -182,9 +193,9 @@ const HomePage = (props) => {
                   }}
                 >
                   {auth.firstName} {auth.lastName}
-                </p>
+                </div>
               ) : null}
-            </p>
+            </div>
             {auth.authenticated ? (
               <MdLogout
                 style={{
@@ -193,6 +204,7 @@ const HomePage = (props) => {
                   float: "right",
                   justifySelf: "flex-end",
                   marginRight: "8px",
+                  marginTop:"3px",
                   fontSize: "25px",
                   cursor: "pointer",
                 }}
@@ -207,26 +219,31 @@ const HomePage = (props) => {
               width: "100%",
               height: "30px",
               backgroundColor: "#131C23",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              display:"grid",
+              gridTemplateColumns:"1fr",
+              alignItems:"center",
+              justifyContent:"center"
+              
+              
+              
             }}
           >
-            <MdSearch
-              style={{ position: "absolute", left: "30px", color: "gray" }}
+            <MdSearch 
+              style={{ color: "gray", zIndex:"0", gridRowStart:"1",gridColumnStart:"1",marginLeft:"12%"}}
             />
             <input
-              className="searchinput"
+              className="searchinput "
               placeholder="Search..."
               style={{
+                justifySelf:"center",
                 borderRadius: "20px",
-                display: "flex",
                 height: "20px",
                 width: "80%",
                 backgroundColor: "#43474b",
+                color:"white",
                 borderStyle: "none",
                 caretColor: "white",
-                paddingLeft: "30px",
+                paddingLeft: "30px",gridRowStart:"1",gridColumnStart:"1"
               }}
             />
           </div>
@@ -263,13 +280,13 @@ const HomePage = (props) => {
         </div>
         <div className="chatArea">
           <div className="chatHeader">
-            <div style={{ marginRight: "8px", marginTop: "7px" }}>
+            <div style={{ display:"flex",justifyContent:"center",alignItems:"center",marginRight:"5px" }}>
               {chatStarted ? (
                 <img
                   style={{
                     height: "25px",
                     width: "25px",
-                    borderRadius: "100%",
+                    borderRadius: "100%"
                   }}
                   src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"
                   alt=""
@@ -280,7 +297,7 @@ const HomePage = (props) => {
             {online ? (
               <div style={{ width: "100%" }}>
                 <div
-                  style={{ width: "70%", height: "20px", paddingTop: "0px" }}
+                  style={{ width: "70%", height: "20px"}}
                 >
                   {chatStarted ? chatUser : null}
                 </div>
@@ -301,7 +318,7 @@ const HomePage = (props) => {
                   style={{
                     width: "70%",
                     height: "40px",
-                    paddingTop: "0px",
+                    paddingTop: "2px",
                     lineHeight: "35px",
                   }}
                 >
