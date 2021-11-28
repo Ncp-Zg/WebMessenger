@@ -1,5 +1,5 @@
 
-import { db, storage } from "../../firebase";
+import { db} from "../../firebase";
 import { userConstants } from "./constants";
 
 export const getRealtimeUsers = (uid) => {
@@ -30,7 +30,7 @@ export const getRealtimeUsers = (uid) => {
 };
 
 export const updateMessage = (message) => {
-  return async (dispatch) => {
+  return async () => {
 
     const data = {
       ...message,
@@ -39,8 +39,9 @@ export const updateMessage = (message) => {
     }
 
     db.collection("conversation")
-    .add(data).then(async (res)=>{
-      const document = await res.get()
+    .add(data)
+    // .then(async (res)=>{
+    //   const document = await res.get()
       // const msg ={msgData:document.data(),msgId:document.id};
       // const uploadRef = storage.ref(`conversation/${document.id}`)
 
@@ -48,7 +49,7 @@ export const updateMessage = (message) => {
       //     msgId:document.id
       // })
      
-    })
+    // })
       
 
     }

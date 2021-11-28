@@ -16,7 +16,7 @@ const Header = (props) => {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-dark">
       <div className="container-fluid" >
-        <div class="navbar-brand text-warning">Chat App</div>
+        <div className="navbar-brand text-warning">Chat App</div>
         {/* <h1>{users.conversations.find(cv=>cv.isView===false) ? `${users.chatUser}'den msg` : null}</h1> */}
         {!auth.authenticated ? (
           <ul className="nav nav-tabs">

@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import Card from "../../Components/UI/Card/Card";
 import Layout from "../../Components/Layout/Layout";
 
 
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { isloggedInUser, signIn } from "../../Redux/Actions/authActions";
+import {signIn } from "../../Redux/Actions/authActions";
 import { Redirect } from "react-router";
 import Header from "../../Components/Header/Header";
-import { toast } from "react-toastify";
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ const LoginPage = () => {
   const dispatch = useDispatch()
   const auth = useSelector(state=>state.auth)
 
-  console.log(auth)
+  // console.log(auth)
   // useEffect(()=>{
   //   if(!auth.authenticated){
   //     dispatch(isloggedInUser())
@@ -26,11 +26,11 @@ const LoginPage = () => {
   const userLogin = (e) =>{
     e.preventDefault();
 
-    if(email == ""){
+    if(email === ""){
       alert("Email is required")
       return;
     }
-    if(password == ""){
+    if(password === ""){
       alert("Password is required")
       return;
     }
@@ -59,7 +59,7 @@ const LoginPage = () => {
             placeholder="Email"
 
             />
-            <label for="floatingInput">Email address</label>
+            <label htmlFor="floatingInput">Email address</label>
             </div>
             <div className="form-floating">
             <input className="form-control" 
@@ -70,7 +70,7 @@ const LoginPage = () => {
             placeholder="Password"
 
             />
-            <label for="floatingInput">Password</label>
+            <label htmlFor="floatingInput">Password</label>
             </div>
             <div className="d-flex justify-content-center align-items-center mt-4">
                 <button className="btn btn-success ">

@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import Layout from "../../Components/Layout/Layout";
 import {
-  getAllConversations,
   getRealtimeConversations,
   getRealtimeUsers,
   isViewed,
@@ -13,14 +12,14 @@ import {
 } from "../../Redux/Actions";
 import "./style.css";
 import logo from "./google-messages.svg";
-import { MdCheckCircle, MdCheckCircleOutline, MdEmojiEmotions, MdLogout, MdSearch, MdSend, MdZoomIn } from "react-icons/md";
+import { MdCheckCircle, MdCheckCircleOutline, MdEmojiEmotions, MdLogout, MdSearch, MdSend, } from "react-icons/md";
 
 const User = (props) => {
   const { user, onClick, convo } = props;
 
   return (
     <div
-      onClick={(e) => onClick(user, convo)}
+      onClick={() => onClick(user, convo)}
       className="displayName"
       tabIndex="1"
     >
@@ -152,7 +151,7 @@ const HomePage = (props) => {
   useEffect(() => {
     if (msgref.current !== "" && ref.current !== 0)
       toast.success(<p style={{ marginLeft: "14px" }}>{msgref.current}</p>, {
-        icon: () => <img style={{ width: "40px" }} src={logo} />,
+        icon: () => <img style={{ width: "40px" }} src={logo} alt=""/>,
       });
   }, [ref.current]);
 
@@ -180,7 +179,7 @@ const HomePage = (props) => {
                   borderRadius: "100%",
                   marginTop:"7px",
                   marginLeft:"5px"
-                }} src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg"/>
+                }} src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg" alt=""/>
               ) : null}
               
               {auth.authenticated ? (
@@ -266,9 +265,9 @@ const HomePage = (props) => {
 
           {users.allmsg.map((msg, index) => {
             if (!msg.isView && msg.user_uid_1 !== userUid) {
-              {
-                msgref.current = msg.name + "  " + " : " + " " + msg.message;
-              }
+              
+                msgref.current = msg.name + "   :  "  + msg.message;
+              
             }
           })}
           {

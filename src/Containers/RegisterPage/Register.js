@@ -3,7 +3,6 @@ import Card from "../../Components/UI/Card/Card";
 import Layout from "../../Components/Layout/Layout";
 import { signup } from "../../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../../firebase";
 import { Redirect } from "react-router";
 import Header from "../../Components/Header/Header";
 import RegisterComponent from "./RegisterComponent";
@@ -67,13 +66,13 @@ const Register = () => {
     e.preventDefault();
 
     const user = {
-      [values.firstName]: values.firstName,
-      [values.lastName]: values.lastName,
-      [values.email]: values.email,
-      [values.password]: values.password,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
     };
     dispatch(signup(user));
-  };
+    };
 
   if (auth.authenticated) {
     return <Redirect to="/" />;
@@ -84,7 +83,7 @@ const Register = () => {
     
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-console.log(values);
+// console.log(values);
   return (
     <Layout>
       <Header />
@@ -93,8 +92,8 @@ console.log(values);
           <form onSubmit={registerUser}>
             <h3 style={{display:"flex",justifyContent:"center",marginBottom:"15px"}}>Sign Up</h3>
 
-            {inputs.map((inpt,index) => (
-              <RegisterComponent key={index} value={values[inpt.name]} {...inpt} handleChange={handleChange}/>
+            {inputs.map((inpt,name) => (
+              <RegisterComponent key={name} value={values[inpt.name]} {...inpt} handlechange={handleChange}/>
             ))}
             <div style={{display:"flex",justifyContent:"center"}}>
               <button className="btn btn-success " type="submit">SignUp</button>
