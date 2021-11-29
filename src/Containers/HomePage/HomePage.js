@@ -60,7 +60,8 @@ const HomePage = (props) => {
   const [chatUser, setChatUser] = useState("");
   const [online, setOnline] = useState(false);
   const [message, setMessage] = useState("");
-
+  const [search, setSearch] = useState("");
+  const [filteredUser, setfilteredUser] = useState();
   const ref = useRef(0);
   const msgref = useRef("");
   const [userUid, setUserUid] = useState(null);
@@ -157,13 +158,35 @@ const HomePage = (props) => {
 
 // console.log(users.conversations)
 
+  const handleChange = (e) => {
+    // console.log(e.target.value)
+    setSearch(e.target.value)
+    
+  }
+
+  useEffect(()=>{
+    const filteredData = users.users?.filter((usr)=>{
+            const data = usr.firstName.toLowerCase() +" " + usr.lastName.toLowerCase()
+
+        return data.includes(search.toLowerCase()) ? usr : null
+
+    })
+    setfilteredUser(filteredData)
+    
+  },[search,users.users])
+
+
+
   return (
     <Layout>
       <ToastContainer theme="dark" />
       <section className="container1">
         <div className="listOfUsers">
           <div
+            
             style={{
+              position:"sticky",
+              top:"0px",
               width: "100%",
               height: "40px",
               backgroundColor: "#2A2F32",
@@ -183,7 +206,8 @@ const HomePage = (props) => {
               ) : null}
               
               {auth.authenticated ? (
-                <div
+               
+               <div
                   style={{
                     color: "orange",
                     float: "left",
@@ -215,6 +239,8 @@ const HomePage = (props) => {
           </div>
           <div
             style={{
+              position:"sticky",
+              top:"40px",
               width: "100%",
               height: "30px",
               backgroundColor: "#131C23",
@@ -231,6 +257,7 @@ const HomePage = (props) => {
               style={{ color: "gray", zIndex:"0", gridRowStart:"1",gridColumnStart:"1",marginLeft:"12%"}}
             />
             <input
+              onChange={(e)=>handleChange(e)}
               className="searchinput "
               placeholder="Search..."
               style={{
@@ -248,7 +275,7 @@ const HomePage = (props) => {
           </div>
           <div style={{ backgroundColor: "#131C23", color: "white" }}>
             {users.users?.length > 0
-              ? users.users.map((user) => {
+              ? filteredUser?.map((user) => {
                   return (
                     <User
                       key={user.uid}
@@ -376,12 +403,13 @@ const HomePage = (props) => {
               <MdSend
                 type="submit"
                 style={{
+                  justifySelf:"end",
                   marginLeft: "20px",
                   backgroundColor: "green",
                   borderRadius: "100%",
                   padding: "4px",
                   color: "white",
-                  fontSize: "20px",
+                  fontSize: "25px",
                 }}
                 onClick={submitMessage}
               />
